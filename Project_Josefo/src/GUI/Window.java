@@ -8,6 +8,7 @@ package GUI;
 import Classes.Soldado;
 import TDAs.CircularDoublyLinkedList;
 import javafx.collections.FXCollections;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -23,40 +24,64 @@ import javafx.scene.layout.VBox;
 public class Window {
     private final CircularDoublyLinkedList<Soldado> soldados;
     private BorderPane root;
-    private ComboBox cb;
+    private ComboBox cb1;
+    private ComboBox cb2;
+    private ComboBox cb3;
     private TextField tf1;
     private TextField tf2;
     private Button b;
     
     public Window() {
-        root=new BorderPane();
-        soldados=new CircularDoublyLinkedList<>();        
+        root=new BorderPane();        
+        soldados=new CircularDoublyLinkedList<>();
         VBox v=new VBox();
-        v.setSpacing(30);
+        v.setStyle("-fx-background-color: #a8ebb7;");
+        v.setSpacing(100);
+        v.setPadding(new Insets(10));
         v.setAlignment(Pos.CENTER);
         Label titulo=new Label("El problema de Josefo");
+        titulo.setStyle("-fx-text-fill : #1d9634; -fx-font-size: 15pt; -fx-font-weight: bold;");
         HBox h1= new HBox();
-        h1.setSpacing(10);
+        h1.setSpacing(15);
         Label l1=new Label("Número de personas");
-        tf1=new TextField();
-        h1.getChildren().addAll(l1,tf1);
+        cb1=new ComboBox(FXCollections.observableArrayList(2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20));
+        cb1.setOnAction(e->{            
+            int numSoldados=(Integer)cb1.getSelectionModel().getSelectedItem();
+            cb2.getItems().clear();
+            for(int i=1;i<=numSoldados;i++)
+                cb2.getItems().add(i);
+            cb2.getSelectionModel().select(0);
+        });
+        cb1.getSelectionModel().select("2");
+        h1.getChildren().addAll(l1,cb1);
         HBox h2=new HBox();
         h2.setSpacing(15);
-        Label l2=new Label("Persona que inicira");
-        tf2=new TextField();
-        h2.getChildren().addAll(l2,tf2);
+        Label l2=new Label("Persona que iniciará");
+        cb2=new ComboBox(FXCollections.observableArrayList(1, 2));
+        cb2.getSelectionModel().select(0);
+        h2.getChildren().addAll(l2,cb2);
         HBox h3=new HBox();
-        h3.setSpacing(25);
+        h3.setSpacing(15);
         Label l3=new Label("Orden de ejecución");
-        cb=new ComboBox(FXCollections.observableArrayList("Derecha", "Izquierda"));
-        h3.getChildren().addAll(l3,cb);
+        cb3=new ComboBox(FXCollections.observableArrayList("Derecha", "Izquierda"));
+        cb3.getSelectionModel().select("Derecha");
+        h3.getChildren().addAll(l3,cb3);
         b=new Button("Start");
+        b.setOnAction(e->{
+            int numSoldados=(Integer)cb1.getSelectionModel().getSelectedItem();
+            int inicio=(Integer)cb2.getSelectionModel().getSelectedItem();
+            String direccion=(String)cb3.getSelectionModel().getSelectedItem();
+            
+        });
         v.getChildren().addAll(titulo,h1,h2,h3,b);
-        root.setRight(v);        
+        root.setRight(v);
     }
 
     public BorderPane getRoot() {
         return root;
     }
     
+    public void algoritmoJosefo(){
+        
+    }
 }
