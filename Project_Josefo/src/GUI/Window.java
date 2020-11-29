@@ -16,24 +16,28 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.Circle;
 /**
  *
  * @author PC
  */
 public class Window {
-    private final CircularDoublyLinkedList<Soldado> soldados;
+    private CircularDoublyLinkedList<Soldado> soldados;
     private BorderPane root;
-    private ComboBox cb1;
-    private ComboBox cb2;
-    private ComboBox cb3;
+    private ComboBox<Integer> cb1;
+    private ComboBox<Integer> cb2;
+    private ComboBox<String> cb3;
     private TextField tf1;
     private TextField tf2;
     private Button b;
+    private StackPane g;
     
     public Window() {
         root=new BorderPane();        
         soldados=new CircularDoublyLinkedList<>();
+        g=new StackPane();
         VBox v=new VBox();
         v.setStyle("-fx-background-color: #a8ebb7;");
         v.setSpacing(100);
@@ -46,13 +50,13 @@ public class Window {
         Label l1=new Label("Número de personas");
         cb1=new ComboBox(FXCollections.observableArrayList(2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20));
         cb1.setOnAction(e->{            
-            int numSoldados=(Integer)cb1.getSelectionModel().getSelectedItem();
+            int numSoldados=cb1.getSelectionModel().getSelectedItem();
             cb2.getItems().clear();
             for(int i=1;i<=numSoldados;i++)
                 cb2.getItems().add(i);
             cb2.getSelectionModel().select(0);
         });
-        cb1.getSelectionModel().select("2");
+        cb1.getSelectionModel().select(0);
         h1.getChildren().addAll(l1,cb1);
         HBox h2=new HBox();
         h2.setSpacing(15);
@@ -68,20 +72,27 @@ public class Window {
         h3.getChildren().addAll(l3,cb3);
         b=new Button("Start");
         b.setOnAction(e->{
-            int numSoldados=(Integer)cb1.getSelectionModel().getSelectedItem();
-            int inicio=(Integer)cb2.getSelectionModel().getSelectedItem();
-            String direccion=(String)cb3.getSelectionModel().getSelectedItem();
-            
+            algoritmoJosefo(cb1.getSelectionModel().getSelectedItem(),
+                    cb2.getSelectionModel().getSelectedItem(),cb3.getSelectionModel().getSelectedItem());
         });
         v.getChildren().addAll(titulo,h1,h2,h3,b);
         root.setRight(v);
     }
 
-    public BorderPane getRoot() {
+    public BorderPane getRoot(){
         return root;
     }
     
-    public void algoritmoJosefo(){
-        
+    public void algoritmoJosefo(int numSoldados,int inicia, String direccion){
+        soldados=new CircularDoublyLinkedList<>();
+        g.getChildren().clear();
+        for(int i=0;i<numSoldados;i++){
+            soldados.addLast(new Soldado(i));
+            Circle c=new Circle(10);
+            c.setTranslateX(150 * Math.cos(Math.toRadians(((360 / (double) numSoldados) * i)+90)));
+            c.setTranslateY(150 * Math.sin(Math.toRadians(((360 / (double) numSoldados) * i)+90)));            
+            g.getChildren().add(c);
+        }
+        root.setCenter(g);
     }
 }

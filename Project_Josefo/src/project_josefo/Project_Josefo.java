@@ -18,7 +18,7 @@ public class Project_Josefo extends Application {
     public void start(Stage primaryStage) {
         Window w=new Window();
         
-        Scene scene = new Scene(w.getRoot(), 600, 500);
+        Scene scene = new Scene(w.getRoot(), 800, 600);
         
         primaryStage.setTitle("Project Joseph");
         primaryStage.setScene(scene);
@@ -26,5 +26,5 @@ public class Project_Josefo extends Application {
     }
     public static void main(String[] args) {
         launch(args);
-    }    
+    }
 }
