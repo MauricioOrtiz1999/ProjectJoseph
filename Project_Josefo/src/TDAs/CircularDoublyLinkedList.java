@@ -152,27 +152,56 @@ public class CircularDoublyLinkedList<E> implements List<E> {
             n=n.next;        
         return n.data;
     }
-    @Override
-    public E remove(int index) {
-        if(index>=current || index<0) throw new IndexOutOfBoundsException("El indice no es valido");
-        E result=last.data;
-        if (last.equals(last.next)){
-            last.data=null;
-            last=null;
-        }else{
-            Node<E> n=last.next;
-            for(int i=0;i<index-1;i++)
-                n=n.next;            
-            Node<E> m=n.next;
-            n.next=m.next;
-            m.next.previous=n;
-            m.next=null;
-            m.previous=null;
-            result=m.data;
-            m.data=null;      
+    
+    public Node<E> getNode(int index) {
+        Node<E> nodoEncontrado = null;
+        if (!isEmpty()) {
+            if (index == 0) {
+                nodoEncontrado = first;
+            } else {
+                if (index > 0 && index < effectiveSize) {
+                    Node<E> aux = first;
+                    for (int i = 0; i < effectiveSize - 1; i++) {
+                        if (i == index - 1) {
+                            Node<E> mod = aux.getNext();
+                            nodoEncontrado = mod;
+                        } else {
+                            aux = aux.getNext();
+                        }
+                    }
+                }
+            }
         }
-        current--;
-        return result;
+        return nodoEncontrado;
+        
+    }
+    
+    
+    @Override
+    public boolean remove(E element) {
+        Node<E> actual = first;
+        Node<E> anterior = last;
+        boolean eliminado = false;
+        do {            
+            if (actual.getData() == element) {
+                if (actual == first) {
+                    first = first.getNext();
+                    last.setNext(first);
+                    first.setPrev(last);
+                }else if (actual == last) {
+                    last = anterior;
+                    first.setPrev(last);
+                    last.setNext(first);
+                }else{
+                    anterior.setNext(actual.getNext());
+                    actual.getNext().setPrev(anterior);
+                }
+                eliminado = true;
+            }
+            anterior = actual;
+            actual = actual.getNext();
+        } while (actual != first && eliminado == false);
+        return eliminado;
     }    
     @Override
     public String toString(){
