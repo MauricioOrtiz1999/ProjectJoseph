@@ -2,6 +2,8 @@
 
 package TDAs;
 
+import java.util.ListIterator;
+
 /**
  *
  * @author PC
@@ -13,6 +15,75 @@ public class CircularDoublyLinkedList<E> implements List<E> {
     public CircularDoublyLinkedList(){
         last = null;
         current = 0;
+    }
+    
+    
+    public ListIterator<E> ListIterator(int indx){
+        ListIterator<E> li = new ListIterator<E>(){
+            Node<E> nodo=new Node<>(null);
+            int iN=indx-1;
+            int iP=indx+1;
+            @Override
+            public boolean hasNext() {
+                return iN<current-1;
+            }
+            @Override
+            public E next() {
+                if(nodo.data==null){
+                    nodo=last;
+                    for(int i=0;i<indx;i++)
+                        nodo=nodo.next;                    
+                }
+                nodo=nodo.next;
+                iN++;
+                return nodo.data; 
+            }
+            @Override
+            public boolean hasPrevious() {
+                return iP>0;
+            }
+            @Override
+            public E previous() {
+                if(nodo.data==null){
+                    nodo=last.next;
+                    for(int i=0;i<current-indx-1;i++)
+                        nodo=nodo.previous;                    
+                }
+                nodo=nodo.previous;
+                iP--;
+                return nodo.data;
+            }
+            @Override
+            public int nextIndex() {
+                
+                return 0;
+            }
+            @Override
+            public int previousIndex() {
+                
+                return 0;
+            }
+            @Override
+            public void remove(){
+                
+            }
+            @Override
+            public void set(E e) {
+                if(current==0 ||nodo.data==null) throw new IllegalStateException("La lista está vacia");
+                nodo.data=e;
+            }
+            @Override
+            public void add(E e) {
+                if(nodo.data==null)addFirst(e);
+                Node<E> m=new Node<>(e);
+                m.next=nodo.next;
+                m.previous=nodo;
+                nodo.next.previous=m;
+                nodo.next=m;
+                current++;
+            }
+        };
+        return li;
     }
 
     @Override
