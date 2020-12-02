@@ -1,31 +1,26 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package Classes;
+
+import javafx.scene.shape.Circle;
 
 /**
  *
- * @author PC
+ * @author Group#9
  */
 public class Soldado {
     private boolean vivo;
-    private int position;
-    public Soldado(int position) {
+    private Circle circulo;
+    public Soldado(Circle c){
         vivo=true;
-        this.position = position;
+        circulo=c;
     }
-    public boolean isVivo() {
+    public boolean isVivo(){
         return vivo;
     }
-    public int getPosition() {
-        return position;
-    }
-    public void setVivo(boolean vivo) {
+    public void setVivo(boolean vivo){
         this.vivo = vivo;
     }
-    public void setPosition(int position) {
-        this.position = position;
-    }    
+    public Circle getCirculo() {
+        return circulo;
+    }
 }

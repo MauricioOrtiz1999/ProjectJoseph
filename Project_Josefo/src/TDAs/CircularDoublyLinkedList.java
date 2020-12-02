@@ -1,8 +1,5 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
+
 package TDAs;
 
 /**
@@ -153,7 +150,7 @@ public class CircularDoublyLinkedList<E> implements List<E> {
         return n.data;
     }
     
-    public Node<E> getNode(int index) {
+    /*public Node<E> getNode(int index) {
         Node<E> nodoEncontrado = null;
         if (!isEmpty()) {
             if (index == 0) {
@@ -174,34 +171,30 @@ public class CircularDoublyLinkedList<E> implements List<E> {
         }
         return nodoEncontrado;
         
-    }
+    }*/
     
     
     @Override
-    public boolean remove(E element) {
-        Node<E> actual = first;
-        Node<E> anterior = last;
-        boolean eliminado = false;
-        do {            
-            if (actual.getData() == element) {
-                if (actual == first) {
-                    first = first.getNext();
-                    last.setNext(first);
-                    first.setPrev(last);
-                }else if (actual == last) {
-                    last = anterior;
-                    first.setPrev(last);
-                    last.setNext(first);
-                }else{
-                    anterior.setNext(actual.getNext());
-                    actual.getNext().setPrev(anterior);
-                }
-                eliminado = true;
-            }
-            anterior = actual;
-            actual = actual.getNext();
-        } while (actual != first && eliminado == false);
-        return eliminado;
+    public E remove(int index) {
+        if(index>=current || index<0) throw new IndexOutOfBoundsException("El indice no es valido");
+        E result=last.data;
+        if (last.equals(last.next)){
+            last.data=null;
+            last=null;
+        }else{
+            Node<E> n=last.next;
+            for(int i=0;i<index-1;i++)
+                n=n.next;            
+            Node<E> m=n.next;
+            n.next=m.next;
+            m.next.previous=n;
+            m.next=null;
+            m.previous=null;
+            result=m.data;
+            m.data=null;      
+        }
+        current--;
+        return result;
     }    
     @Override
     public String toString(){
