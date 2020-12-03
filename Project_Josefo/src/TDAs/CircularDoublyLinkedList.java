@@ -16,8 +16,6 @@ public class CircularDoublyLinkedList<E> implements List<E> {
         last = null;
         current = 0;
     }
-    
-    
     public ListIterator<E> ListIterator(int indx){
         ListIterator<E> li = new ListIterator<E>(){
             Node<E> nodo=new Node<>(null);
@@ -55,17 +53,35 @@ public class CircularDoublyLinkedList<E> implements List<E> {
             }
             @Override
             public int nextIndex() {
-                
+                if(hasNext()){
+                    Node<E> n=last;
+                    for(int i=0;i<current;i++){
+                        n=n.next;
+                        if(nodo.data==n.data)return i+1;
+                    }
+                }else throw new IllegalStateException("No hay más next");
                 return 0;
             }
             @Override
             public int previousIndex() {
-                
+                if(hasPrevious()){
+                    Node<E> n=last;
+                    for(int i=0;i<current;i++){
+                        n=n.next;
+                        if(nodo.data==n.data)return i-1;                        
+                    }
+                }else throw new IllegalStateException("No hay más previous");
                 return 0;
             }
             @Override
             public void remove(){
-                
+                if(current==0 ||nodo.data==null) throw new IllegalStateException("La lista está vacia");
+                Node<E> m=nodo.next;
+                nodo.previous.next=m;
+                m.previous=nodo.previous;
+                nodo.data=null;
+                nodo.next=nodo.previous=null;
+                current--;
             }
             @Override
             public void set(E e) {
@@ -85,19 +101,20 @@ public class CircularDoublyLinkedList<E> implements List<E> {
         };
         return li;
     }
-
     @Override
     public void clear(){
-        Node<E> n=last.next;
-        for(int i=0;i<current;i++){
-            Node m=n.next;
-            n.data=null;
-            n.previous=null;
-            n.next=null;
-            n=m;
+        if(!isEmpty()){
+            Node<E> n=last.next;
+            for(int i=0;i<current;i++){
+                Node m=n.next;
+                n.data=null;
+                n.previous=null;
+                n.next=null;
+                n=m;
+            }
+            last=null;
+            current=0;
         }
-        last=null;
-        current=0;
     }
     private class Node<E>{
         private E data;
@@ -220,31 +237,6 @@ public class CircularDoublyLinkedList<E> implements List<E> {
             n=n.next;        
         return n.data;
     }
-    
-    /*public Node<E> getNode(int index) {
-        Node<E> nodoEncontrado = null;
-        if (!isEmpty()) {
-            if (index == 0) {
-                nodoEncontrado = first;
-            } else {
-                if (index > 0 && index < effectiveSize) {
-                    Node<E> aux = first;
-                    for (int i = 0; i < effectiveSize - 1; i++) {
-                        if (i == index - 1) {
-                            Node<E> mod = aux.getNext();
-                            nodoEncontrado = mod;
-                        } else {
-                            aux = aux.getNext();
-                        }
-                    }
-                }
-            }
-        }
-        return nodoEncontrado;
-        
-    }*/
-    
-    
     @Override
     public E remove(int index) {
         if(index>=current || index<0) throw new IndexOutOfBoundsException("El indice no es valido");

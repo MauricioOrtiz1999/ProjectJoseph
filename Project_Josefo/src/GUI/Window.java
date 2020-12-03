@@ -7,6 +7,7 @@ package GUI;
 
 import Classes.Soldado;
 import TDAs.CircularDoublyLinkedList;
+import java.util.ListIterator;
 import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -14,6 +15,12 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BackgroundPosition;
+import javafx.scene.layout.BackgroundRepeat;
+import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
@@ -28,6 +35,10 @@ public class Window {
       private CircularDoublyLinkedList<Soldado> soldados;    
       private BorderPane root;    
       private StackPane g;
+      private Background backGround;
+      private BackgroundImage bImage;
+      private BackgroundSize bSize;
+      private Image image;
       private VBox v;
       private HBox h1;
       private HBox h2;
@@ -48,7 +59,15 @@ public class Window {
     public void iniciar(){
         soldados=new CircularDoublyLinkedList<>();
         
-        root=new BorderPane();        
+        root=new BorderPane();
+        
+        //Set del BackGround 
+        image=new Image("/Imagenes/backGround.jpg");
+        bSize=new BackgroundSize(800,600,false,false,true,true);
+        bImage=new BackgroundImage(image,BackgroundRepeat.NO_REPEAT,BackgroundRepeat.NO_REPEAT,BackgroundPosition.DEFAULT,bSize);
+        backGround=new Background(bImage);
+        root.setBackground(backGround);
+        
         soldados=new CircularDoublyLinkedList<>();
         g=new StackPane();
         root.setCenter(g);
@@ -104,8 +123,8 @@ public class Window {
         start.setOnAction(e->{
             llenarPane(cb1.getSelectionModel().getSelectedItem(),
                     cb2.getSelectionModel().getSelectedItem());
-            //AlgoritmoJosefo a=new AlgoritmoJosefo();
-            //a.start();            
+            AlgoritmoJosefo a=new AlgoritmoJosefo();
+            a.start();            
         });
     }
     public void llenarPane(double numSoldados, int indx){
@@ -130,6 +149,45 @@ public class Window {
 
     public BorderPane getRoot(){
         return root;
+    }
+    
+    private class AlgoritmoJosefo extends Thread{
+        @Override
+        public void run() {
+            try{
+                Thread.sleep(1500);
+            }catch (InterruptedException ex) {
+                System.out.println(ex.getMessage());
+            }
+            ListIterator<Soldado> lS=soldados.ListIterator(cb2.getSelectionModel().getSelectedItem()-1);
+            int soldadosVivos=soldados.size();
+            boolean b=cb3.getSelectionModel().getSelectedItem().equals("Derecha");
+            while(soldadosVivos>1){
+                Soldado s1;
+                if(b)s1=lS.next();
+                else s1=lS.previous();
+                if(s1.isVivo()){
+                    Soldado s;
+                    if(b){
+                        do
+                            s=lS.next();
+                        while(!s.isVivo());
+                    }else{
+                        do
+                            s=lS.previous();
+                        while(!s.isVivo());
+                    }
+                    s.setVivo(false);
+                    s.getCirculo().setFill(Color.RED);
+                    soldadosVivos--;
+                    try{
+                        Thread.sleep(1500);
+                    }catch (InterruptedException ex) {
+                        System.out.println(ex.getMessage());
+                    }
+                }
+            }
+        }
     }
     
     

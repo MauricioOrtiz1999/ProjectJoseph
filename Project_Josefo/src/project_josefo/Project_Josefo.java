@@ -20,7 +20,7 @@ public class Project_Josefo extends Application {
         
         Scene scene = new Scene(w.getRoot(), 800, 600);
         
-        primaryStage.setTitle("Project Joseph");
+        primaryStage.setTitle("Algoritmo de Joseph");
         primaryStage.setScene(scene);
         primaryStage.show();
     }

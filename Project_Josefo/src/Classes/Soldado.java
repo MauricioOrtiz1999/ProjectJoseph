@@ -11,8 +11,8 @@ public class Soldado {
     private boolean vivo;
     private Circle circulo;
     public Soldado(Circle c){
-        vivo=true;
-        circulo=c;
+        this.vivo=true;
+        this.circulo=c;
     }
     public boolean isVivo(){
         return vivo;
