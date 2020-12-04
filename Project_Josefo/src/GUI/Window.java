@@ -40,9 +40,12 @@ public class Window {
       private BackgroundSize bSize;
       private Image image;
       private VBox v;
+      private VBox container;
       private HBox h1;
       private HBox h2;
       private HBox h3;
+      private HBox botones;
+      private HBox title;
       private ComboBox<Integer> cb1;
       private ComboBox<Integer> cb2;
       private ComboBox<String> cb3;
@@ -51,6 +54,8 @@ public class Window {
       private Label l2;
       private Label l3;
       private Button start;
+      private Button stop;
+      private Button resume;
 
     public Window() {
         iniciar();
@@ -63,7 +68,7 @@ public class Window {
         
         //Set del BackGround 
         image=new Image("/Imagenes/backGround.jpg");
-        bSize=new BackgroundSize(800,600,false,false,true,true);
+        bSize=new BackgroundSize(1000,600,false,false,true,true);
         bImage=new BackgroundImage(image,BackgroundRepeat.NO_REPEAT,BackgroundRepeat.NO_REPEAT,BackgroundPosition.DEFAULT,bSize);
         backGround=new Background(bImage);
         root.setBackground(backGround);
@@ -72,6 +77,7 @@ public class Window {
         g=new StackPane();
         root.setCenter(g);
         
+        container=new VBox();
         v=new VBox();
         titulo=new Label("El problema de Josefo");
         
@@ -88,20 +94,38 @@ public class Window {
         cb3=new ComboBox(FXCollections.observableArrayList("Derecha", "Izquierda"));
         
         start=new Button("Start");
+        stop=new Button("Stop");
+        resume=new Button("Resume");
+        
+        botones=new HBox();
+        title=new HBox();
         
         configuraciones();
         
         h1.getChildren().addAll(l1,cb1);            
         h2.getChildren().addAll(l2,cb2);       
-        h3.getChildren().addAll(l3,cb3);        
-        v.getChildren().addAll(titulo,h1,h2,h3,start);
-        root.setRight(v);
+        h3.getChildren().addAll(l3,cb3);
+        title.getChildren().addAll(titulo);
+        botones.getChildren().addAll(start,stop,resume);
+        v.getChildren().addAll(h1,h2,h3,botones);
+        container.getChildren().addAll(title,v);
+        root.setRight(container);
     }
     public void configuraciones(){
-        v.setStyle("-fx-background-color: #a8ebb7;");
+        
+        container.setStyle("-fx-background-color: #a8ebb7;");
+        container.setSpacing(70);
+        container.setAlignment(Pos.CENTER);
+        
+        title.setAlignment(Pos.CENTER);
+        
         v.setSpacing(100);
         v.setPadding(new Insets(10));
         v.setAlignment(Pos.CENTER);
+        
+        botones.setSpacing(10);
+        botones.setPadding(new Insets(5));
+        botones.setAlignment(Pos.CENTER);
         
         titulo.setStyle("-fx-text-fill : #1d9634; -fx-font-size: 15pt; -fx-font-weight: bold;");
         
@@ -126,6 +150,8 @@ public class Window {
             AlgoritmoJosefo a=new AlgoritmoJosefo();
             a.start();            
         });
+        
+        
     }
     public void llenarPane(double numSoldados, int indx){
         g.getChildren().clear();
