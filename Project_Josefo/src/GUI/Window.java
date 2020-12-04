@@ -62,6 +62,7 @@ public class Window {
       private Button stop;
       private Button resume;
       private Button revivirbtn;
+      private AlgoritmoJosefo algo;
 
     public Window() {
         iniciar();
@@ -179,17 +180,18 @@ public class Window {
         h3.setAlignment(Pos.CENTER);
         cb3.getSelectionModel().select("Derecha");
         
-        AlgoritmoJosefo a=new AlgoritmoJosefo();
         
         start.setOnAction(e->{
             llenarPane(cb1.getSelectionModel().getSelectedItem(),
                     cb2.getSelectionModel().getSelectedItem());
-            a.start();            
+            algo=new AlgoritmoJosefo();
+            algo.start();
+                       
         });
         
-        stop.setOnAction(e-> a.suspend());
+        stop.setOnAction(e-> algo.suspend());
         
-        resume.setOnAction(e-> a.resume());
+        resume.setOnAction(e-> algo.resume());
         
         opCont.setAlignment(Pos.CENTER);
         opCont.setSpacing(10);
