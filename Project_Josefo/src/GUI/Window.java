@@ -59,7 +59,7 @@ public class Window {
       private Label tituloOpcion;
       private Label opcionEx;
       private Button start;
-      private Button stop;
+      private Button pause;
       private Button resume;
       private Button revivirbtn;
       private AlgoritmoJosefo algo;
@@ -101,7 +101,7 @@ public class Window {
         cb3=new ComboBox(FXCollections.observableArrayList("Derecha", "Izquierda"));
         
         start=new Button("Start");
-        stop=new Button("Stop");
+        pause=new Button("Pause");
         resume=new Button("Resume");
         
         botones=new HBox();
@@ -122,7 +122,7 @@ public class Window {
         opcionExtra.getChildren().addAll(opcionEx,revivir);
         opCont.getChildren().addAll(tituloOpcion,opcionExtra,revivirbtn);
         title.getChildren().addAll(titulo);
-        botones.getChildren().addAll(start,stop,resume);
+        botones.getChildren().addAll(start,pause,resume);
         v.getChildren().addAll(h1,h2,h3,botones);
         container.getChildren().addAll(title,v,opCont);
         root.setRight(container);
@@ -140,9 +140,13 @@ public class Window {
         v.setPadding(new Insets(10));
         v.setAlignment(Pos.CENTER);
         
+        revivirbtn.setDisable(true);
+        pause.setDisable(true);
+        resume.setDisable(true);
+        
         //Darle estilo a los Botones
         start.setStyle("-fx-background-color: #000000,linear-gradient(#7ebcea, #2f4b8f),linear-gradient(#426ab7, #263e75),linear-gradient(#395cab, #223768); -fx-background-insets: 0,1,2,3; -fx-background-radius: 3,2,2,2; -fx-padding: 12 30 12 30; -fx-text-fill: white; -fx-font-size: 12px;-fx-pref-height: 28px;-fx-pref-width: 110px;");
-        stop.setStyle("-fx-background-color: #000000,linear-gradient(#7ebcea, #2f4b8f),linear-gradient(#426ab7, #263e75),linear-gradient(#395cab, #223768); -fx-background-insets: 0,1,2,3; -fx-background-radius: 3,2,2,2; -fx-padding: 12 30 12 30; -fx-text-fill: white; -fx-font-size: 12px;-fx-pref-height: 28px;-fx-pref-width: 110px;");
+        pause.setStyle("-fx-background-color: #000000,linear-gradient(#7ebcea, #2f4b8f),linear-gradient(#426ab7, #263e75),linear-gradient(#395cab, #223768); -fx-background-insets: 0,1,2,3; -fx-background-radius: 3,2,2,2; -fx-padding: 12 30 12 30; -fx-text-fill: white; -fx-font-size: 12px;-fx-pref-height: 28px;-fx-pref-width: 110px;");
         resume.setStyle("-fx-background-color: #000000,linear-gradient(#7ebcea, #2f4b8f),linear-gradient(#426ab7, #263e75),linear-gradient(#395cab, #223768); -fx-background-insets: 0,1,2,3; -fx-background-radius: 3,2,2,2; -fx-padding: 12 30 12 30; -fx-text-fill: white; -fx-font-size: 12px;-fx-pref-height: 28px;-fx-pref-width: 110px;");
         revivirbtn.setStyle("-fx-background-color: #090a0c,linear-gradient(#38424b 0%, #1f2429 20%, #191d22 100%),linear-gradient(#20262b, #191d22),radial-gradient(center 50% 0%, radius 100%, rgba(114,131,148,0.9), rgba(255,255,255,0));-fx-background-radius: 5,4,3,5;-fx-background-insets: 0,1,2,0;-fx-text-fill: white;-fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );-fx-font-family: \"Arial\";-fx-text-fill: linear-gradient(white, #d0d0d0);-fx-font-size: 12px;-fx-padding: 10 20 10 20;");
         
@@ -184,12 +188,13 @@ public class Window {
         start.setOnAction(e->{
             llenarPane(cb1.getSelectionModel().getSelectedItem(),
                     cb2.getSelectionModel().getSelectedItem());
+            revivirbtn.setDisable(true);
             algo=new AlgoritmoJosefo();
             algo.start();
                        
         });
         
-        stop.setOnAction(e-> algo.suspend());
+        pause.setOnAction(e->algo.suspend());
         
         resume.setOnAction(e-> algo.resume());
         
@@ -244,6 +249,9 @@ public class Window {
     private class AlgoritmoJosefo extends Thread{
         @Override
         public void run() {
+            start.setDisable(true);
+            pause.setDisable(false);
+            resume.setDisable(false);
             try{
                 Thread.sleep(1500);
             }catch (InterruptedException ex) {
@@ -277,6 +285,11 @@ public class Window {
                     }
                 }
             }
+            
+            start.setDisable(false);
+            revivirbtn.setDisable(false);
+            pause.setDisable(true);
+            resume.setDisable(true);
         }
     }
     
