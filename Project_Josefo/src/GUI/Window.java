@@ -119,7 +119,7 @@ public class Window {
         
         title.setAlignment(Pos.CENTER);
         
-        v.setSpacing(100);
+        v.setSpacing(80);
         v.setPadding(new Insets(10));
         v.setAlignment(Pos.CENTER);
         
@@ -130,6 +130,7 @@ public class Window {
         titulo.setStyle("-fx-text-fill : #1d9634; -fx-font-size: 15pt; -fx-font-weight: bold;");
         
         h1.setSpacing(15);
+        h1.setAlignment(Pos.CENTER);
         cb1.setOnAction(e->{
             cb2.getItems().clear();
             for(int i=1;i<=cb1.getSelectionModel().getSelectedItem();i++)
@@ -139,9 +140,11 @@ public class Window {
         cb1.getSelectionModel().select(0);
         
         h2.setSpacing(15);
+        h2.setAlignment(Pos.CENTER);
         cb2.getSelectionModel().select(0);
         
         h3.setSpacing(15);
+        h3.setAlignment(Pos.CENTER);
         cb3.getSelectionModel().select("Derecha");
         
         start.setOnAction(e->{
