@@ -7,6 +7,7 @@ package GUI;
 
 import Classes.Soldado;
 import TDAs.CircularDoublyLinkedList;
+import java.util.Iterator;
 import java.util.ListIterator;
 import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
@@ -14,7 +15,6 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundImage;
@@ -41,21 +41,27 @@ public class Window {
       private Image image;
       private VBox v;
       private VBox container;
+      private VBox opCont;
       private HBox h1;
       private HBox h2;
       private HBox h3;
       private HBox botones;
       private HBox title;
+      private HBox opcionExtra;
       private ComboBox<Integer> cb1;
       private ComboBox<Integer> cb2;
       private ComboBox<String> cb3;
+      private ComboBox<Integer> revivir;
       private Label titulo;
       private Label l1;
       private Label l2;
       private Label l3;
+      private Label tituloOpcion;
+      private Label opcionEx;
       private Button start;
       private Button stop;
       private Button resume;
+      private Button revivirbtn;
 
     public Window() {
         iniciar();
@@ -100,26 +106,35 @@ public class Window {
         botones=new HBox();
         title=new HBox();
         
+        opCont=new VBox();
+        tituloOpcion=new Label("Opcion Extra");
+        opcionExtra=new HBox();
+        opcionEx=new Label("Revivir Soldado:");
+        revivir=new ComboBox(FXCollections.observableArrayList(1,2,3,4,5));
+        revivirbtn=new Button("Revivir");
+        
         configuraciones();
         
         h1.getChildren().addAll(l1,cb1);            
         h2.getChildren().addAll(l2,cb2);       
         h3.getChildren().addAll(l3,cb3);
+        opcionExtra.getChildren().addAll(opcionEx,revivir);
+        opCont.getChildren().addAll(tituloOpcion,opcionExtra,revivirbtn);
         title.getChildren().addAll(titulo);
         botones.getChildren().addAll(start,stop,resume);
         v.getChildren().addAll(h1,h2,h3,botones);
-        container.getChildren().addAll(title,v);
+        container.getChildren().addAll(title,v,opCont);
         root.setRight(container);
     }
     public void configuraciones(){
         
         container.setStyle("-fx-background-color: #a8ebb7;");
-        container.setSpacing(70);
+        container.setSpacing(30);
         container.setAlignment(Pos.CENTER);
         
         title.setAlignment(Pos.CENTER);
         
-        v.setSpacing(80);
+        v.setSpacing(70);
         v.setPadding(new Insets(10));
         v.setAlignment(Pos.CENTER);
         
@@ -136,6 +151,10 @@ public class Window {
             for(int i=1;i<=cb1.getSelectionModel().getSelectedItem();i++)
                 cb2.getItems().add(i);
             cb2.getSelectionModel().select(0);
+            revivir.getItems().clear();
+            for(int i=1;i<cb1.getSelectionModel().getSelectedItem();i++)
+                revivir.getItems().add(i);
+            revivir.getSelectionModel().select(0);
         });
         cb1.getSelectionModel().select(0);
         
@@ -154,13 +173,26 @@ public class Window {
             a.start();            
         });
         
+        opCont.setAlignment(Pos.CENTER);
+        opCont.setSpacing(10);
+        opCont.setPadding(new Insets(10));
+        
+        revivir.getSelectionModel().select(0);
+        
+        opcionExtra.setAlignment(Pos.CENTER);
+        opcionExtra.setSpacing(10);
+        opcionExtra.setPadding(new Insets(10));
+        
+        revivirbtn.setOnAction(e-> revivirSoldado());
         
     }
+    
+    
     public void llenarPane(double numSoldados, int indx){
         g.getChildren().clear();
         soldados.clear();
         for(int i=1;i<=numSoldados;i++){
-            Circle c=new Circle(10);
+            Circle c=new Circle(20);
             c.setTranslateX(Math.cos(Math.toRadians(((360 / numSoldados) * i)+90))*150);
             c.setTranslateY(Math.sin(Math.toRadians(((360 / numSoldados) * i)+90))*150);
             soldados.addLast(new Soldado(c));
@@ -174,6 +206,15 @@ public class Window {
                 c.setFill(Color.GREEN);
             g.getChildren().addAll(c,l);
         }
+    }
+    
+    private void revivirSoldado(){
+        
+        ListIterator<Soldado> it=soldados.ListIterator(revivir.getSelectionModel().getSelectedItem()-1);
+        Soldado sold=it.next();
+        sold.setVivo(true);
+        sold.getCirculo().setFill(Color.GREEN);
+        
     }
 
     public BorderPane getRoot(){
