@@ -110,7 +110,7 @@ public class Window {
         tituloOpcion=new Label("Opcion Extra");
         opcionExtra=new HBox();
         opcionEx=new Label("Revivir Soldado:");
-        revivir=new ComboBox(FXCollections.observableArrayList(1,2,3,4,5));
+        revivir=new ComboBox(FXCollections.observableArrayList(1,2));
         revivirbtn=new Button("Revivir");
         
         configuraciones();
@@ -126,6 +126,7 @@ public class Window {
         container.getChildren().addAll(title,v,opCont);
         root.setRight(container);
     }
+    
     public void configuraciones(){
         
         container.setStyle("-fx-background-color: #a8ebb7;");
@@ -137,6 +138,18 @@ public class Window {
         v.setSpacing(70);
         v.setPadding(new Insets(10));
         v.setAlignment(Pos.CENTER);
+        
+        //Darle estilo a los Botones
+        start.setStyle("-fx-background-color: #000000,linear-gradient(#7ebcea, #2f4b8f),linear-gradient(#426ab7, #263e75),linear-gradient(#395cab, #223768); -fx-background-insets: 0,1,2,3; -fx-background-radius: 3,2,2,2; -fx-padding: 12 30 12 30; -fx-text-fill: white; -fx-font-size: 12px;-fx-pref-height: 28px;-fx-pref-width: 110px;");
+        stop.setStyle("-fx-background-color: #000000,linear-gradient(#7ebcea, #2f4b8f),linear-gradient(#426ab7, #263e75),linear-gradient(#395cab, #223768); -fx-background-insets: 0,1,2,3; -fx-background-radius: 3,2,2,2; -fx-padding: 12 30 12 30; -fx-text-fill: white; -fx-font-size: 12px;-fx-pref-height: 28px;-fx-pref-width: 110px;");
+        resume.setStyle("-fx-background-color: #000000,linear-gradient(#7ebcea, #2f4b8f),linear-gradient(#426ab7, #263e75),linear-gradient(#395cab, #223768); -fx-background-insets: 0,1,2,3; -fx-background-radius: 3,2,2,2; -fx-padding: 12 30 12 30; -fx-text-fill: white; -fx-font-size: 12px;-fx-pref-height: 28px;-fx-pref-width: 110px;");
+        revivirbtn.setStyle("-fx-background-color: #090a0c,linear-gradient(#38424b 0%, #1f2429 20%, #191d22 100%),linear-gradient(#20262b, #191d22),radial-gradient(center 50% 0%, radius 100%, rgba(114,131,148,0.9), rgba(255,255,255,0));-fx-background-radius: 5,4,3,5;-fx-background-insets: 0,1,2,0;-fx-text-fill: white;-fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );-fx-font-family: \"Arial\";-fx-text-fill: linear-gradient(white, #d0d0d0);-fx-font-size: 12px;-fx-padding: 10 20 10 20;");
+        
+        //Darle estilo a los ComboBox
+        cb1.setStyle("-fx-background-color:linear-gradient(#f0ff35, #a9ff00),radial-gradient(center 50% -40%, radius 200%, #b8ee36 45%, #80c800 50%);-fx-background-radius: 6, 5;-fx-background-insets: 0, 1;-fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.4) , 5, 0.0 , 0 , 1 );-fx-text-fill: #395306;");
+        cb2.setStyle("-fx-background-color:linear-gradient(#f0ff35, #a9ff00),radial-gradient(center 50% -40%, radius 200%, #b8ee36 45%, #80c800 50%);-fx-background-radius: 6, 5;-fx-background-insets: 0, 1;-fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.4) , 5, 0.0 , 0 , 1 );-fx-text-fill: #395306;");
+        cb3.setStyle("-fx-background-color:linear-gradient(#f0ff35, #a9ff00),radial-gradient(center 50% -40%, radius 200%, #b8ee36 45%, #80c800 50%);-fx-background-radius: 6, 5;-fx-background-insets: 0, 1;-fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.4) , 5, 0.0 , 0 , 1 );-fx-text-fill: #395306;");
+        revivir.setStyle("-fx-background-color:linear-gradient(#f0ff35, #a9ff00),radial-gradient(center 50% -40%, radius 200%, #b8ee36 45%, #80c800 50%);-fx-background-radius: 6, 5;-fx-background-insets: 0, 1;-fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.4) , 5, 0.0 , 0 , 1 );-fx-text-fill: #395306;");
         
         botones.setSpacing(10);
         botones.setPadding(new Insets(5));
@@ -152,7 +165,7 @@ public class Window {
                 cb2.getItems().add(i);
             cb2.getSelectionModel().select(0);
             revivir.getItems().clear();
-            for(int i=1;i<cb1.getSelectionModel().getSelectedItem();i++)
+            for(int i=1;i<=cb1.getSelectionModel().getSelectedItem();i++)
                 revivir.getItems().add(i);
             revivir.getSelectionModel().select(0);
         });
@@ -166,12 +179,17 @@ public class Window {
         h3.setAlignment(Pos.CENTER);
         cb3.getSelectionModel().select("Derecha");
         
+        AlgoritmoJosefo a=new AlgoritmoJosefo();
+        
         start.setOnAction(e->{
             llenarPane(cb1.getSelectionModel().getSelectedItem(),
                     cb2.getSelectionModel().getSelectedItem());
-            AlgoritmoJosefo a=new AlgoritmoJosefo();
             a.start();            
         });
+        
+        stop.setOnAction(e-> a.suspend());
+        
+        resume.setOnAction(e-> a.resume());
         
         opCont.setAlignment(Pos.CENTER);
         opCont.setSpacing(10);

@@ -18,7 +18,7 @@ public class Project_Josefo extends Application {
     public void start(Stage primaryStage) {
         Window w=new Window();
         
-        Scene scene = new Scene(w.getRoot(), 1000, 600);
+        Scene scene = new Scene(w.getRoot(), 1200, 600);
         
         primaryStage.setTitle("Algoritmo de Joseph");
         primaryStage.setScene(scene);
