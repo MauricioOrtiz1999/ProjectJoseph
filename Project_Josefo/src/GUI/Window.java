@@ -7,8 +7,9 @@ package GUI;
 
 import Classes.Soldado;
 import TDAs.CircularDoublyLinkedList;
-import java.util.Iterator;
 import java.util.ListIterator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -27,7 +28,6 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
-import javafx.scene.text.Font;
 /**
  *
  * @author PC
@@ -129,8 +129,7 @@ public class Window {
         root.setRight(container);
     }
     
-    public void configuraciones(){
-        
+    public void configuraciones(){        
         container.setStyle("-fx-background-color: #a8ebb7;");
         container.setSpacing(30);
         container.setAlignment(Pos.CENTER);
@@ -173,12 +172,12 @@ public class Window {
         h1.setAlignment(Pos.CENTER);
         cb1.setOnAction(e->{
             cb2.getItems().clear();
-            for(int i=1;i<=cb1.getSelectionModel().getSelectedItem();i++)
-                cb2.getItems().add(i);
-            cb2.getSelectionModel().select(0);
             revivir.getItems().clear();
-            for(int i=1;i<=cb1.getSelectionModel().getSelectedItem();i++)
+            for(int i=1;i<=cb1.getSelectionModel().getSelectedItem();i++){
+                cb2.getItems().add(i);
                 revivir.getItems().add(i);
+            }
+            cb2.getSelectionModel().select(0);
             revivir.getSelectionModel().select(0);
         });
         cb1.getSelectionModel().select(0);
@@ -190,8 +189,7 @@ public class Window {
         h3.setSpacing(15);
         h3.setAlignment(Pos.CENTER);
         cb3.getSelectionModel().select("Derecha");
-        
-        
+                
         start.setOnAction(e->{
             llenarPane(cb1.getSelectionModel().getSelectedItem(),
                     cb2.getSelectionModel().getSelectedItem());
@@ -241,12 +239,10 @@ public class Window {
     }
     
     private void revivirSoldado(){
-        
         ListIterator<Soldado> it=soldados.ListIterator(revivir.getSelectionModel().getSelectedItem()-1);
         Soldado sold=it.next();
         sold.setVivo(true);
-        sold.getCirculo().setFill(Color.GREEN);
-        
+        sold.getCirculo().setFill(Color.GREEN);        
     }
 
     public BorderPane getRoot(){
@@ -261,18 +257,17 @@ public class Window {
             resume.setDisable(false);
             try{
                 Thread.sleep(1500);
-            }catch (InterruptedException ex) {
-                System.out.println(ex.getMessage());
+            }catch (InterruptedException ex){
+                Logger.getLogger(Window.class.getName()).log(Level.SEVERE, null, ex);
             }
             ListIterator<Soldado> lS=soldados.ListIterator(cb2.getSelectionModel().getSelectedItem()-1);
             int soldadosVivos=soldados.size();
             boolean b=cb3.getSelectionModel().getSelectedItem().equals("Derecha");
             while(soldadosVivos>1){
-                Soldado s1;
-                if(b)s1=lS.next();
-                else s1=lS.previous();
-                if(s1.isVivo()){
-                    Soldado s;
+                Soldado s;
+                if(b)s=lS.next();
+                else s=lS.previous();
+                if(s.isVivo()){
                     if(b){
                         do
                             s=lS.next();
@@ -287,18 +282,15 @@ public class Window {
                     soldadosVivos--;
                     try{
                         Thread.sleep(1500);
-                    }catch (InterruptedException ex) {
-                        System.out.println(ex.getMessage());
+                    }catch (InterruptedException ex){
+                        Logger.getLogger(Window.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
-            }
-            
+            }            
             start.setDisable(false);
             revivirbtn.setDisable(false);
             pause.setDisable(true);
             resume.setDisable(true);
         }
     }
-    
-    
 }
