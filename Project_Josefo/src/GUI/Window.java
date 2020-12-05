@@ -27,6 +27,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.text.Font;
 /**
  *
  * @author PC
@@ -86,7 +87,7 @@ public class Window {
         
         container=new VBox();
         v=new VBox();
-        titulo=new Label("El problema de Josefo");
+        titulo=new Label("El Problema De Josefo");
         
         h1= new HBox();
         l1=new Label("Número de personas");
@@ -143,6 +144,12 @@ public class Window {
         revivirbtn.setDisable(true);
         pause.setDisable(true);
         resume.setDisable(true);
+        
+        l1.setStyle("-fx-font-size: 10pt; -fx-font-weight: bold;");
+        l2.setStyle("-fx-font-size: 10pt; -fx-font-weight: bold;");
+        l3.setStyle("-fx-font-size: 10pt; -fx-font-weight: bold;");
+        tituloOpcion.setStyle("-fx-text-fill : #1d9634; -fx-font-size: 12pt; -fx-font-weight: bold;");
+        opcionEx.setStyle("-fx-font-size: 10pt; -fx-font-weight: bold;");
         
         //Darle estilo a los Botones
         start.setStyle("-fx-background-color: #000000,linear-gradient(#7ebcea, #2f4b8f),linear-gradient(#426ab7, #263e75),linear-gradient(#395cab, #223768); -fx-background-insets: 0,1,2,3; -fx-background-radius: 3,2,2,2; -fx-padding: 12 30 12 30; -fx-text-fill: white; -fx-font-size: 12px;-fx-pref-height: 28px;-fx-pref-width: 110px;");
